@@ -21,6 +21,11 @@ public class UserController {
 		return "index";
 	}
 
+	@GetMapping("/admin/users")
+	public String allUsers() {
+		return "users";
+	}
+
 	@RequestMapping(value = "hello", method = RequestMethod.GET)
 	public String printWelcome(ModelMap model) {
 		List<String> messages = new ArrayList<>();
