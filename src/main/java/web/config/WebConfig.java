@@ -1,6 +1,7 @@
 package web.config;
 
 
+import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -38,6 +39,7 @@ public class WebConfig implements WebMvcConfigurer {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
         templateEngine.setEnableSpringELCompiler(true);
+        templateEngine.addDialect(new LayoutDialect());
         return templateEngine;
     }
 
