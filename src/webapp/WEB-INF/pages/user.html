@@ -9,7 +9,11 @@
 <body>
 
 <div layout:fragment="content">
-    <h1 th:text="'Hello, ' + ${username}">Hello</h1>
+    <h2 th:text="${user.getUsername()} + '\'s Profile'">User's Profile</h2>
+    <ul>
+        <li th:text="'Id: ' + ${user.getId()}">Id</li>
+        <li th:text="'Username: ' + ${user.getUsername()}">Username</li>
+    </ul>
 </div>
 
 </body>

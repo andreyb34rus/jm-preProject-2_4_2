@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import web.dao.UserDao;
@@ -34,6 +35,12 @@ public class UserController {
 	public String allUsers(Model model) {
 		model.addAttribute("users", userDao.findAll());
 		return "users";
+	}
+
+	@GetMapping("/admin/users/{id}")
+	public String userProfile(@PathVariable("id") Long id, Model model) {
+		model.addAttribute("user", userDao.findById(id));
+		return "user";
 	}
 
 	@GetMapping("/user")
