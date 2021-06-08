@@ -1,11 +1,13 @@
 package web.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import web.dao.UserDao;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -15,6 +17,13 @@ import java.util.List;
 @RequestMapping("/")
 public class UserController {
 
+	private UserDao userDao;
+
+	@Autowired
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
+
 	@GetMapping("/admin")
 	public String adminDashboard(Principal principal, Model model) {
 		model.addAttribute("username", principal.getName());
@@ -22,7 +31,8 @@ public class UserController {
 	}
 
 	@GetMapping("/admin/users")
-	public String allUsers() {
+	public String allUsers(Model model) {
+		model.addAttribute("users", userDao.findAll());
 		return "users";
 	}
 
