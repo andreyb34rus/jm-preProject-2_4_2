@@ -15,15 +15,20 @@ import java.util.List;
 @RequestMapping("/")
 public class UserController {
 
-	@GetMapping()
-	public String index(Principal principal, Model model) {
+	@GetMapping("/admin")
+	public String adminDashboard(Principal principal, Model model) {
 		model.addAttribute("username", principal.getName());
-		return "index";
+		return "admin_dashboard";
 	}
 
 	@GetMapping("/admin/users")
 	public String allUsers() {
 		return "users";
+	}
+
+	@GetMapping("/user")
+	public String userProfile() {
+		return "user";
 	}
 
 	@RequestMapping(value = "hello", method = RequestMethod.GET)
