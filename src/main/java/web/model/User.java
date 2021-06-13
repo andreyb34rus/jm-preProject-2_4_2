@@ -74,18 +74,8 @@ public class User implements UserDetails {
         return roles;
     }
 
-//    public void setRoles(Set<Role> roles) {
-//        this.roles = roles;
-//    }
-
-// fixme: почему roleDao равно null
-    public void setRoles(String... roles) {
-        Set<Role> roleSet = new HashSet<>();
-        for (String role : roles) {
-            Role r = roleDao.findByRole(role);
-            roleSet.add(r);
-        }
-        this.roles = roleSet;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     @Override

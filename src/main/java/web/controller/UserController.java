@@ -5,22 +5,28 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import web.dao.RoleDao;
 import web.dao.UserDao;
+import web.model.Role;
 import web.model.User;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/")
 public class UserController {
 
 	private UserDao userDao;
+	private RoleDao roleDao;
 
 	@Autowired
-	public void setDao(UserDao userDao) {
+	public void setDao(UserDao userDao, RoleDao roleDao) {
 		this.userDao = userDao;
+		this.roleDao = roleDao;
 	}
 
 	@GetMapping("/admin")
@@ -48,7 +54,14 @@ public class UserController {
 
 //	fixme: не работает!
 	@PostMapping("/admin/users")
-	public String saveUser(@ModelAttribute("user") User user) {
+	public String saveUser(@ModelAttribute("user") User user,
+						   @RequestParam("selRoles") List<String> roles) {
+		Set<Role> roleSet = new HashSet<>();
+		for (String role : roles) {
+			Role r = roleDao.findByRole(role);
+			roleSet.add(r);
+		}
+		user.setRoles(roleSet);
 		userDao.save(user);
 		return "redirect:/admin/users";
 	}
