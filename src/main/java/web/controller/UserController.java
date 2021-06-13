@@ -49,12 +49,12 @@ public class UserController {
 
 	@GetMapping("/admin/users/new")
 	public String newUser(@ModelAttribute("user") User user) {
-		return "user_form";
+		return "user_create_form";
 	}
 
 	@PostMapping("/admin/users")
 	public String saveUser(@ModelAttribute("user") User user,
-						   @RequestParam("selRoles") List<String> roles) {
+			@RequestParam(value = "selRoles", defaultValue = "ROLE_USER") List<String> roles) {
 		Set<Role> roleSet = new HashSet<>();
 		for (String role : roles) {
 			Role r = roleDao.findByRole(role);
@@ -62,6 +62,26 @@ public class UserController {
 		}
 		user.setRoles(roleSet);
 		userDao.save(user);
+		return "redirect:/admin/users";
+	}
+
+	@GetMapping("/admin/users/{id}/edit")
+	public String editUser(@PathVariable("id") long id, Model model) {
+		model.addAttribute("user",userDao.findById(id));
+		return "user_update_form";
+	}
+
+	@PostMapping("/admin/users/{id}")
+	public String update(@ModelAttribute("user") User user,
+			@PathVariable("id") long id,
+			@RequestParam(value = "selRoles", defaultValue = "ROLE_USER") List<String> roles) {
+		Set<Role> roleSet = new HashSet<>();
+		for (String role : roles) {
+			Role r = roleDao.findByRole(role);
+			roleSet.add(r);
+		}
+		user.setRoles(roleSet);
+		userDao.update(user);
 		return "redirect:/admin/users";
 	}
 

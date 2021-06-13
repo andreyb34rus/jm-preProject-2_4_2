@@ -15,6 +15,8 @@
         <li th:text="'Username: ' + ${user.getUsername()}">Username</li>
         <li th:text="'Roles: ' + ${user.getRoles()}">Roles</li>
     </ul>
+    <br/>
+    <a th:href="@{/admin/users/{id}/edit(id=${user.getId()})}">Edit</a>
 </div>
 
 </body>
