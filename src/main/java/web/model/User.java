@@ -1,19 +1,31 @@
 package web.model;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import web.dao.RoleDao;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
 
+    @Transient
+    RoleDao roleDao;
+
+    @Autowired
+    public void setRoleDao(RoleDao roleDao) {
+        this.roleDao = roleDao;
+    }
+
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     private String username;
     private String password;
@@ -23,14 +35,22 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+
     public User() {
     }
 
-    public Long getId() {
+    public User(long id, String username, String password, Set<Role> roles) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -54,8 +74,18 @@ public class User implements UserDetails {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+//    public void setRoles(Set<Role> roles) {
+//        this.roles = roles;
+//    }
+
+// fixme: почему roleDao равно null
+    public void setRoles(String... roles) {
+        Set<Role> roleSet = new HashSet<>();
+        for (String role : roles) {
+            Role r = roleDao.findByRole(role);
+            roleSet.add(r);
+        }
+        this.roles = roleSet;
     }
 
     @Override

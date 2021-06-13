@@ -8,12 +8,15 @@
 </head>
 <body>
 
-<div layout:fragment="content">
+<content layout:fragment="content">
     <h1>All Users</h1>
     <div th:each="user : ${users}">
         <a th:href="@{/admin/users/{id}(id=${user.getId()})}" th:text="${user.getUsername()}">Username</a>
     </div>
-</div>
+    <br/>
+    <hr/>
+    <a th:href="@{/admin/users/new}">Add new user</a>
+</content>
 
 </body>
 </html>

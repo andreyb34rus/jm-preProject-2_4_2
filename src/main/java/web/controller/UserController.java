@@ -4,11 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import web.dao.UserDao;
+import web.model.User;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -21,7 +19,7 @@ public class UserController {
 	private UserDao userDao;
 
 	@Autowired
-	public void setUserDao(UserDao userDao) {
+	public void setDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
 
@@ -42,6 +40,34 @@ public class UserController {
 		model.addAttribute("user", userDao.findById(id));
 		return "user";
 	}
+
+	@GetMapping("/admin/users/new")
+	public String newUser(@ModelAttribute("user") User user) {
+		return "user_form";
+	}
+
+//	fixme: не работает!
+	@PostMapping("/admin/users")
+	public String saveUser(@ModelAttribute("user") User user) {
+		userDao.save(user);
+		return "redirect:/admin/users";
+	}
+
+//	@GetMapping("/test")
+//	public String test() {
+//		User user1 = new User();
+//		user1.setId(13L);
+//		user1.setUsername("13");
+//		user1.setPassword("13");
+//		Role role = new Role();
+//		role.setId(3l);
+//		role.setRole("ROLE_USER");
+//		Set<Role> roleSet = new HashSet<Role>();
+//		roleSet.add(role);
+//		user1.setRoles(roleSet);
+//		userDao.save(user1);
+//		return "redirect:/admin";
+//	}
 
 	@GetMapping("/user")
 	public String userProfile() {

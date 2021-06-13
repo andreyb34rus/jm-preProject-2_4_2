@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout}">
+<head>
+  <meta charset="UTF-8">
+  <title>User Form</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+  <form th:method="POST" th:action="@{/admin/users}" th:object="${user}">
+    <label for="name">Username</label>
+    <input type="text" th:field="*{username}" id="name">
+    <br>
+    <label for="password">Password</label>
+    <input type="text" th:field="*{password}" id="password">
+    <br>
+    <label for="selectRoles">Choose roles:</label>
+    <select id="selectRoles" name="roles" th:field="*{roles}" multiple>
+      <option value="ROLE_ADMIN">ADMIN</option>
+      <option value="ROLE_USER">USER</option>
+    </select>
+    <input type="submit" value="Save">
+  </form>
+</div>
+
+</body>
+</html>
