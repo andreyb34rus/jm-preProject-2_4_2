@@ -18,7 +18,7 @@ public class UserDaoImp implements UserDao {
     @Transactional
     public User findByUsername(String username) {
         return entityManager.createQuery(
-                "select u from User u left join fetch u.roles where u.username like :username", User.class)
+                "select u from User u where u.username like :username", User.class)
                 .setParameter("username", username)
                 .getSingleResult();
     }

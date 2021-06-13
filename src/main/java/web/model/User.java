@@ -1,27 +1,15 @@
 package web.model;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import web.dao.RoleDao;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
-
-    @Transient
-    RoleDao roleDao;
-
-    @Autowired
-    public void setRoleDao(RoleDao roleDao) {
-        this.roleDao = roleDao;
-    }
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,11 +18,10 @@ public class User implements UserDetails {
     private String username;
     private String password;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
-
 
     public User() {
     }
