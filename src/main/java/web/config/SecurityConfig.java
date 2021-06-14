@@ -15,7 +15,7 @@ import web.config.handler.LoginSuccessHandler;
 import web.services.UserServiceImp;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private UserServiceImp userService;
@@ -69,7 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //страницы аутентификаци доступна всем
                 .antMatchers("/login").anonymous()
                 // защищенные URL
-                .antMatchers("/hello", "/admin/**").access("hasAnyRole('ADMIN')").anyRequest().authenticated();
+                .antMatchers("/admin/**").access("hasAnyRole('ADMIN')").anyRequest().authenticated();
     }
 
     @Bean
