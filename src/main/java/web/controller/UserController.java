@@ -7,26 +7,22 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import web.dao.RoleDao;
 import web.dao.UserDao;
-import web.model.Role;
 import web.model.User;
+import web.services.UserServiceImp;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/")
 public class UserController {
 
-	private UserDao userDao;
-	private RoleDao roleDao;
+	private UserServiceImp userService;
 
 	@Autowired
-	public void setDao(UserDao userDao, RoleDao roleDao) {
-		this.userDao = userDao;
-		this.roleDao = roleDao;
+	public void setDao(UserServiceImp userService) {
+		this.userService = userService;
 	}
 
 	@GetMapping("/admin")
@@ -37,13 +33,13 @@ public class UserController {
 
 	@GetMapping("/admin/users")
 	public String allUsers(Model model) {
-		model.addAttribute("users", userDao.findAll());
+		model.addAttribute("users", userService.findAll());
 		return "users";
 	}
 
 	@GetMapping("/admin/users/{id}")
 	public String userProfile(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("user", userDao.findById(id));
+		model.addAttribute("user", userService.findById(id));
 		return "user";
 	}
 
@@ -55,19 +51,14 @@ public class UserController {
 	@PostMapping("/admin/users")
 	public String saveUser(@ModelAttribute("user") User user,
 			@RequestParam(value = "selRoles", defaultValue = "ROLE_USER") List<String> roles) {
-		Set<Role> roleSet = new HashSet<>();
-		for (String role : roles) {
-			Role r = roleDao.findByRole(role);
-			roleSet.add(r);
-		}
-		user.setRoles(roleSet);
-		userDao.save(user);
+		userService.setRoles(user, roles);
+		userService.save(user);
 		return "redirect:/admin/users";
 	}
 
 	@GetMapping("/admin/users/{id}/edit")
 	public String editUser(@PathVariable("id") long id, Model model) {
-		model.addAttribute("user",userDao.findById(id));
+		model.addAttribute("user",userService.findById(id));
 		return "user_update_form";
 	}
 
@@ -75,19 +66,14 @@ public class UserController {
 	public String update(@ModelAttribute("user") User user,
 			@PathVariable("id") long id,
 			@RequestParam(value = "selRoles", defaultValue = "ROLE_USER") List<String> roles) {
-		Set<Role> roleSet = new HashSet<>();
-		for (String role : roles) {
-			Role r = roleDao.findByRole(role);
-			roleSet.add(r);
-		}
-		user.setRoles(roleSet);
-		userDao.update(user);
+		userService.setRoles(user, roles);
+		userService.update(user);
 		return "redirect:/admin/users";
 	}
 
 	@PostMapping("/admin/users/{id}/delete")
 	public String delete(@PathVariable("id") long id) {
-		userDao.delete(id);
+		userService.delete(id);
 		return "redirect:/admin/users";
 	}
 
