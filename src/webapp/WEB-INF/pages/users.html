@@ -12,6 +12,13 @@
     <h1>All Users</h1>
     <div th:each="user : ${users}">
         <a th:href="@{/admin/users/{id}(id=${user.getId()})}" th:text="${user.getUsername()}">Username</a>
+        <div>
+            <a type="button" th:href="@{/admin/users/{id}/edit(id=${user.getId()})}">Edit</a>
+            <form method="post" th:action="@{/admin/users/{id}/delete(id=${user.getId()})}">
+                <input type="submit" value="delete">
+            </form>
+        </div>
+        <br/>
     </div>
     <br/>
     <hr/>
