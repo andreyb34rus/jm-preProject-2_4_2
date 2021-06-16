@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import web.dao.RoleDao;
 import web.dao.UserDao;
@@ -19,11 +20,14 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     private UserDao userDao;
     private RoleDao roleDao;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImp(UserDao userDao, RoleDao roleDao) {
+    public UserServiceImp(UserDao userDao, RoleDao roleDao,
+                          PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
         this.roleDao = roleDao;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -48,6 +52,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     @Override
     public void save(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.save(user);
     }
 
