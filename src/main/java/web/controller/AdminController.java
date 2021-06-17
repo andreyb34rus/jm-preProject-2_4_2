@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import web.model.User;
-import web.services.UserServiceImp;
+import web.services.UserService;
 
 import java.security.Principal;
 import java.util.List;
@@ -14,10 +14,10 @@ import java.util.List;
 @RequestMapping("/")
 public class AdminController {
 
-    private UserServiceImp userService;
+    private UserService userService;
 
     @Autowired
-    public AdminController(UserServiceImp userService) {
+    public AdminController(UserService userService) {
         this.userService = userService;
     }
 

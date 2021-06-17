@@ -1,7 +1,6 @@
 package web.dao;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import web.model.User;
 
 import javax.persistence.EntityManager;
@@ -15,7 +14,6 @@ public class UserDaoImp implements UserDao {
     EntityManager entityManager;
 
     @Override
-    @Transactional
     public User findByUsername(String username) {
         return entityManager.createQuery(
                 "select u from User u where u.username like :username", User.class)
@@ -33,19 +31,16 @@ public class UserDaoImp implements UserDao {
         return entityManager.find(User.class, id);
     }
 
-    @Transactional
     @Override
     public void save(User user) {
         entityManager.persist(user);
     }
 
-    @Transactional
     @Override
     public void update(User updatedUser) {
         entityManager.merge(updatedUser);
     }
 
-    @Transactional
     @Override
     public void delete(long id) {
         entityManager.remove(findById(id));
