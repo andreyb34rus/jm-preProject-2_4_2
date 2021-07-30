@@ -23,6 +23,7 @@
         <tr sope="row" th:each="user : ${users}" th:object="${user}">
             <td th:text="*{id}"></td>
             <td th:text="*{username}"></td>
+            <td><span th:each="role : *{roles}" th:text="${role} + ' '"></span></td>
             <td><a th:href="@{/admin/users/{id}/edit(id=*{id})}">Edit</a></td>
             <td>
                 <form method="post" th:action="@{/admin/users/{id}/delete(id=*{id})}">
@@ -32,16 +33,6 @@
         </tr>
         </tbody>
     </table>
-<!--    <div th:each="user : ${users}">-->
-<!--        <a th:href="@{/admin/users/{id}(id=${user.getId()})}" th:text="${user.getUsername()}">Username</a>-->
-<!--        <div>-->
-<!--            <a type="button" th:href="@{/admin/users/{id}/edit(id=${user.getId()})}">Edit</a>-->
-<!--            <form method="post" th:action="@{/admin/users/{id}/delete(id=${user.getId()})}">-->
-<!--                <input type="submit" value="delete">-->
-<!--            </form>-->
-<!--        </div>-->
-<!--        <br/>-->
-<!--    </div>-->
     <br/>
     <hr/>
     <a th:href="@{/admin/users/new}">Add new user</a>

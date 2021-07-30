@@ -11,7 +11,10 @@
 <div layout:fragment="content">
     <form th:method="POST" th:action="@{/admin/users/{id}(id=${user.getId()})}" th:object="${user}">
         <label for="name">Username</label>
-        <input type="text" th:field="*{username}" id="name">
+        <input id="name" type="text" name="username" th:field="*{username}">
+        <br>
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password">
         <br>
         <label for="selectRoles">Choose roles:</label>
         <select id="selectRoles" name="selRoles" multiple>
