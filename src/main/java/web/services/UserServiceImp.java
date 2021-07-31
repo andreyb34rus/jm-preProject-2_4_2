@@ -62,10 +62,10 @@ public class UserServiceImp implements UserService, UserDetailsService {
     @Override
     public void update(User updatedUser) {
         User user = findById(updatedUser.getId());
-        if (updatedUser.getUsername() != null) {
+        if (updatedUser.getUsername() != null && !updatedUser.getUsername().equals("")) {
             user.setUsername(updatedUser.getUsername());
         }
-        if (updatedUser.getPassword() != null) {
+        if (updatedUser.getPassword() != null && !updatedUser.getPassword().equals("")) {
             user.setPassword(new BCryptPasswordEncoder(12).encode(updatedUser.getPassword()));
         }
         user.setRoles(updatedUser.getRoles());
